@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 """
-polynomials
-@author: b0003
+Polynomials
+@author: Abdullah Alnauimi
 """
 import numpy as np
 import matplotlib.pyplot as plt

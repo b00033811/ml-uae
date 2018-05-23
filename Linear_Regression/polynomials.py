@@ -8,11 +8,11 @@ import matplotlib.pyplot as plt
 def fit_poly(a,k):
     '''returns a function (A=V.a) for every term in a polynomial\
     where V is the vandermonde matrix, a is the coef. matrix'''
-    f=[lambda x,a=a,k=k:[a*value**k for value in x] for a,k in zip(a,k)]
-    return f
+    A=[lambda x,a=a,k=k:[a*n**k for n in x] for a,k in zip(a,k)]
+    return A
 def evaluate_poly(x,functions):
     '''# evaluates A=V.a,stores it in matrix form, and returns a list y(x)=[A0,..Ak]'''
-    linear_combinations=[f(x) for f in functions]
+    linear_combinations=[A(x) for A in functions]
     return [sum(i) for i in zip(*linear_combinations)] ,\
                              list(map(list,zip(*linear_combinations)))
 ############################## Main #########################################

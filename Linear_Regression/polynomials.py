@@ -35,8 +35,3 @@ plt.ylabel('y(x)')
 plt.legend()
 plt.grid()
 np.savetxt('data.csv', (x,y), delimiter=',')
-
-
-
-
-

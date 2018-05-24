@@ -16,7 +16,7 @@ def evaluate_poly(x,functions):
     return [sum(i) for i in zip(*linear_combinations)] ,\
                              list(map(list,zip(*linear_combinations)))
 ############################## Main #########################################
-# y(x)=1+x+x^2
+# y(x)=x+x^2-0.2x^3
 coefficients=[0,1,1,-.2] # polynomial 
 degree=[0,1,2,3]
 A=fit_poly(coefficients,degree) # returns functions A0 A1 A2

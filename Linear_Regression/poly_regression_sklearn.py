@@ -47,4 +47,3 @@ plt.ylabel('f(x)')
 plt.grid()
 plt.legend()
 plt.title('Polynomial Regression Using sklearn')
-

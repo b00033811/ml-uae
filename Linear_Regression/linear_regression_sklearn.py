@@ -5,8 +5,9 @@ from sklearn.model_selection import train_test_split
 # loading data
 x_raw,y_raw=np.loadtxt('data.csv',delimiter=',')
 # reshape the data
-x=x_raw.reshape(-1,1)
-y=y_raw.reshape(-1,1)
+n_features=1
+x=x_raw.reshape(-1,n_features)
+y=y_raw.reshape(-1,n_features)
 # split the model into test/train sets
 x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=.3,
                                                random_state=1337,

@@ -20,8 +20,8 @@ print ('The R2 score is {0:.2f}'.format (R2))
 #get model parameters
 coef=model.intercept_,*model.coef_
 print (', '.join('a{0}={1:.2f}'.format(i,*a) for i,a in enumerate(coef)))
-# get the model predictions
-#visualize the model
+# get the model predictions &
+# visualize the model
 predictions=model.predict(x)
 fig1=plt.figure('Linear Regression')
 plt.plot(x,predictions,color='b',label='Linear model | R2={0:.2f}'.format(R2))

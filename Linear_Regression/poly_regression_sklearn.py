@@ -16,6 +16,7 @@ def evaluate_poly(x,functions):
                              
 # loading data
 x_raw,y_raw=np.loadtxt('data.csv',delimiter=',')
+# generate polynomial features
 degree=3
 poly_features=fit_poly([1]*(degree+1),list(range(0,degree+1)))
 _,poly_features=evaluate_poly(x_raw,poly_features)
@@ -39,11 +40,11 @@ print (', '.join('a{0}={1:.2f}'.format(i,*a) for i,a in enumerate(coef)))
 # visualize the model
 predictions=model.predict(x)
 fig1=plt.figure('Linear Regression')
-plt.plot(x_raw,predictions,color='b',label='Linear model | R2={0:.2f}'.format(R2))
+plt.plot(x_raw,predictions,color='b',label='Polynomial model | R2={0:.2f}'.format(R2))
 plt.scatter(x_raw,y_raw,color='r',marker='.',label='Input data')
 plt.xlabel('x')
 plt.ylabel('f(x)')
 plt.grid()
 plt.legend()
-plt.title('Linear Regression Using sklearn')
+plt.title('Polynomial Regression Using sklearn')
 

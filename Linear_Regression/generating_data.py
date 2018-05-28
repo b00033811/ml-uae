@@ -17,13 +17,19 @@ def evaluate_poly(x,A):
 # y(x)=x+x^2-0.2x^3
 coefficients=[0,1,1,-.2] # polynomial 
 degree=[0,1,2,3]
-A=fit_poly(coefficients,degree) # returns A(x0)...A(Xn) 
-# Evaluate the functions and returns y(x)
-x=np.linspace(0,5,20)
-y,_=evaluate_poly(x,A) 
+A=fit_poly(coefficients,degree) # returns A(x0)...A(Xn)
+# Evaluate the functions and returns p(x)
+x=np.linspace(0,5,100)
+p,_=evaluate_poly(x,A) 
+# Fix the random seed and add gauss. noise to the data.
+np.random.seed(seed=1337)
+e=np.random.normal(0,.7,len(x))
+y=p+e
 #Plotting
-plt.plot(x,y,label='p(x)=x+x^2-0.2x^3')
+plt.scatter(x,y,label='y(x)=x+x^2-0.2x^3+e(x)',marker='.')
+plt.plot(x,p,label='p(x)=x+x^2-0.2x^3',color='red')
 plt.xlabel('x')
 plt.ylabel('y(x)')
 plt.legend()
 plt.grid()
+#np.savetxt('data.csv', (x,y), delimiter=',')

@@ -4,24 +4,24 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
 def fit_poly(a,k):
-    '''returns a function (A=V.a) for every term in a polynomial\
-    where V is the vandermonde matrix, a is the coef. matrix'''
-    A=[lambda x,a=a,k=k:[a*n**k for n in x] for a,k in zip(a,k)]
+    '''returns a function of the dot product (A=V.a) '''
+    A=lambda x,a=a,k=k:[[a*n**k for a,k in zip(a,k)] for n in x]
     return A
-def evaluate_poly(x,functions):
-    '''# evaluates A=V.a,stores it in matrix form, and returns a list y(x)=[A0,..Ak]'''
-    linear_combinations=[A(x) for A in functions]
-    return [sum(i) for i in zip(*linear_combinations)] ,\
-                             list(map(list,zip(*linear_combinations)))
-                             
+def evaluate_poly(x,A):
+    ''' evaluates A=V.a,stores it in matrix form, and 
+     returns a list y(x)=[A0,..An]'''
+    A=A
+    y=[sum(i) for i in A(x)] 
+    return y,A(x)
+                       
 # loading data
 x_raw,y_raw=np.loadtxt('data.csv',delimiter=',')
 # generate polynomial features
 degree=3
 poly_features=fit_poly([1]*(degree+1),list(range(0,degree+1)))
-_,poly_features=evaluate_poly(x_raw,poly_features)
-x=np.array(poly_features)
+_,x=evaluate_poly(x_raw,poly_features)
 # reshape the data
+x=np.array(x)
 y=y_raw.reshape(-1,1)
 # split the model into test/train sets
 x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=.3,

@@ -9,7 +9,7 @@ x_raw,y_raw=np.loadtxt('cross_data.csv',delimiter=',')
 
 #%%
 # Generate polynomial features
-degree=12 # k=15
+degree=12 # k=12
 # call the polynomial class and fit
 p0=Poly([1]*(degree+1),list(range(0,degree+1)))
 p0.fit(x_raw)

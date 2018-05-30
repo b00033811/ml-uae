@@ -11,7 +11,7 @@ degree=8 # k=8
 # Initialize the polynomial class and fit
 p0=Poly([1]*(degree+1),list(range(0,degree+1)))
 p0.fit(x_raw)
-# Get the polynomial features
+# Get the polynomial features for 8th order model
 poly_features=p0.poly_features()
 # reshape the data
 x=np.array(poly_features)
@@ -22,25 +22,26 @@ _x,x_test,_y,y_test=train_test_split(x,y,test_size=.3,
                                                shuffle=True)
 #%% Split into Kfold and get the test/valid score.
 # Create 4 folds
-kf=KFold(4)
+folds=4
+kf=KFold(folds)
 # Initiate classifiers 
 models=[LinearRegression() for m in range(0,degree)]
-scores=[] #variable to store the final scores
+valid_error=[] # variable to store the valid error
+train_error=[] # variable to store the train error
+#looping on every model.
 for k,m in enumerate(models):
-    v_temp=[] # temp. variable, stores validation fold(s) result.
-    t_temp=[] # temp. variable, stores training fold(s) result.
-    # get indx. for valid and training
-    # NOTE: [:,0:k+1] fit only on features corrosponding to order.
-    for i_valid,i_train in kf.split(_x): 
-        m.fit(_x[i_train][:,0:k+1],\
-              _y[i_train])
-        # get score for current fold and store it
-        t_temp.append(m.score(_x[i_train][:,0:k+1],_y[i_train]))
-        v_temp.append(m.score(_x[i_valid][:,0:k+1],_y[i_valid]))
-    scores.append([t_temp,v_temp])
-# get the avg. error for testing and valid folds.
-test_error=[1-sum(t)/len(t) for t,_ in scores]
-valid_error=[1-sum(v)/len(v) for _,v in scores]
+    # get poly features for current order [k] poly. model
+    k_features=_x[:,0:k+1]
+    # function: fit and get r2 score of model.
+    f=lambda t,v:m.fit(k_features[t],_y[t]).\
+             score(k_features[v],_y[v])
+    # validation scores for each fold
+    v_score=[f(train,valid) for valid,train in kf.split(_x)]
+    # training score for each fold
+    t_score=[f(train,train) for _,train in kf.split(_x)]
+    # average valid and test error for all folds
+    valid_error.append(1-sum(v_score)/len(v_score))
+    train_error.append(1-sum(t_score)/len(t_score))
 # get best model poly. order
 k=np.argmin(valid_error)
 # fit model to training and validation data
@@ -51,13 +52,14 @@ print('Optimum polynomial order = {0}\n\
 testing score = {1:.2f}'.format(k,k_score))
 #%% plotting
 fig1,ax=plt.subplots()
+ax.set_xlabel('x'),ax.set_ylabel('f(x)')
 y_pred=models[k].predict(x[:,0:k+1])
 ax.plot(x_raw,y_pred,color='b',\
          label='Polynomial model k={1} | R2={0:.2f}'.format(k_score,k))
 ax.scatter(x_raw,y_raw,color='r',marker='.',label='Input data')
 ax.grid(),ax.legend()
 fig2,ax2=plt.subplots()
-ax2.plot(test_error,label='Test Error')
+ax2.set_xlabel('Polynomial Order'),ax2.set_ylabel('Error')
+ax2.plot(train_error,label='Train Error')
 ax2.plot(valid_error,label='Valid Error')
 ax2.grid(),ax2.legend()
-
